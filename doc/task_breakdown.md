@@ -29,6 +29,15 @@ This is a breakdown of tasks for building the **SQL Query Builder** application.
   - An "Add Sorting" button to add sorting parameters.
   - A "Clear Sorting" button to reset sorting parameters.
 
+- **Grouping (GROUP BY):**
+  - A dropdown list to select columns for grouping results.
+  - Display a message "Please select columns for grouping."
+
+- **Having Clause:**
+  - Fields to specify conditions on grouped results.
+  - A dropdown for columns and operators (`=`, `>`, `<`).
+  - A text field to input values for conditions.
+
 ---
 
 ## 2. Generating and Displaying SQL Queries
@@ -37,8 +46,9 @@ This is a breakdown of tasks for building the **SQL Query Builder** application.
     - Generate `SELECT` with selected columns.
     - Generate `FROM` with selected tables.
     - Generate `WHERE` with provided filters.
+    - Generate `GROUP BY` and `HAVING` if specified.
     - Generate `ORDER BY` with specified sorting parameters.
-  - Handle table joins (JOIN) based on foreign keys.
+    - Handle table joins (JOIN) based on foreign keys.
 
 - **Viewing the Query:**
   - Display the generated SQL query in a text area for review.
@@ -58,6 +68,10 @@ This is a breakdown of tasks for building the **SQL Query Builder** application.
   - Display the query results in an HTML table using `<table>`, `<th>`, `<tr>`, `<td>` tags.
   - Add a "No data" message if the query result is empty.
 
+- **Summary for Data Structures:**
+  - Provide a summary view of the selected tables, columns, and conditions.
+  - Display this summary dynamically based on the current query parameters.
+
 ---
 
 ## 4. Working with Table Joins (JOIN)
@@ -68,5 +82,14 @@ This is a breakdown of tasks for building the **SQL Query Builder** application.
 - **Selecting Join Type:**
   - Add the ability to select the join type (`INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN`).
 
+- **Handling Multiple Tables:**
+  - Allow users to select multiple tables and define relationships.
+  - Display clear messages if tables are unrelated and require manual join conditions.
+
 - **Generating JOIN Queries:**
   - Update the query generation logic to handle joins between tables.
+
+---
+
+## Additional Documentation
+- For client-side scenarios and use cases, refer to the "Handling Multiple Tables in SQL Query Builder" document.
