@@ -1,4 +1,3 @@
-
 # Handling Multiple Tables in the SQL Query Builder
 
 This document describes the possible scenarios of how the SQL Query Builder application interacts with multiple tables, including potential issues and approaches to solving them. The goal is to ensure correct interaction with the database in various scenarios and provide a logical and clear behavior for the user.
