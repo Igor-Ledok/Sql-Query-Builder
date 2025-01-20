@@ -1,125 +1,135 @@
-# Handling Multiple Tables in the SQL Query Builder
+# Scenarios for Interaction in SQL Query Builder
 
-This document describes the possible scenarios of how the SQL Query Builder application interacts with multiple tables, including potential issues and approaches to solving them. The goal is to ensure correct interaction with the database in various scenarios and provide a logical and clear behavior for the user.
+This document describes various scenarios of user interaction with SQL Query Builder, including possible errors and approaches to solving them. The goal is to ensure the program works correctly in different cases and provides logical behavior for the user.
 
 ---
 
-## Scenarios for Table Interaction
+## Scenario 1: Working with a Single Table
 
-### Scenario 1: Single Table
 - Description:
   The user selects only one table, such as `Customers`.
-- Program Logic:
-  - The program displays a list of columns from the selected table.
-  - A simple SQL query is generated:
+
+- Program Logic: 
+  - The program displays a list of columns from the selected table.  
+  - A simple SQL query is generated:  
     ```sql
     SELECT CustomerID, CustomerName, ContactNumber
     FROM Customers;
-    ```
-  - The user can add filters, sorting, and select specific columns.
+    ```  
+  - The user can add filters, sorting, and select specific columns.  
+
 - Expected Result:
-  A table with data from the single selected table is displayed correctly.
+  The program correctly displays data from the selected single table.
 
 ---
 
-### Scenario 2: Two Related Tables
+## Scenario 2: Working with Multiple Related Tables
+
 - Description:
-  The user selects two tables that have a clear relationship via a foreign key, such as `Customers` and `Orders` (related through `CustomerID`).
+  The user selects two or more tables that are related via a foreign key, such as `Customers` and `Orders` (related through `CustomerID`).
+
 - Program Logic:
-  - The program automatically identifies the relationship using the foreign key.
-  - By default, the program suggests an `INNER JOIN`. The user can manually change this to `LEFT JOIN`, `RIGHT JOIN`, or another type of join.
-  - If the user prefers, they can explicitly specify a `CROSS JOIN`.
-  - A query is generated:
+  - The program automatically identifies the relationship via the foreign key.  
+  - A default join type (`INNER JOIN`) is suggested, but the user can choose another type (`LEFT JOIN`, `RIGHT JOIN`, etc.).  
+  - An SQL query is generated:  
     ```sql
-    SELECT Customers.CustomerName, Orders.OrderID, Orders.OrderDate, Orders.TotalAmount
+    SELECT Customers.CustomerName, Orders.OrderID, Orders.OrderDate
     FROM Customers
     INNER JOIN Orders ON Customers.CustomerID = Orders.CustomerID;
-    ```
-  - The user can select columns from both tables and add filters and sorting.
+    ```  
+  - If the user removes one of the tables, all relationships with that table are removed, and the program notifies the user.  
+
 - Expected Result:
-  A combined table with data from the two related tables is displayed correctly.
+  The program displays data from related tables. If a table is removed, its relationships are also removed, and the interface reflects this.
 
 ---
 
-### Scenario 3: Two Unrelated Tables
+## Scenario 3: Working with Unrelated Tables
+
 - Description:
-  The user selects two tables that do not have a clear relationship, such as `Customers` and `Products`.
+  The user selects tables that do not have a clear relationship (e.g., `Customers` and `Products`).
+
 - Program Logic:
-  - The program informs the user that the tables are unrelated and suggests manually specifying a join condition (via the `ON` clause).
-  - If the user does not specify a join condition, a `CROSS JOIN` is used:
+  - The program notifies the user that the tables are unrelated and offers options:  
+    - Specify the relationship manually.  
+    - Use a `CROSS JOIN` if no relationship is specified.  
+  - An SQL query is generated:  
     ```sql
     SELECT Customers.CustomerName, Products.ProductName
     FROM Customers
     CROSS JOIN Products;
-    ```
+    ```  
+
 - Expected Result:
-  Either a Cartesian product of the two tables is displayed, or a table based on the manually specified join condition.
+  The program displays either the Cartesian product of the tables or data based on the manually specified relationship.
 
 ---
 
-### Scenario 4: More Than Two Related Tables
-- Description:
-  The user selects three or more related tables, such as `Customers`, `Orders`, and `OrderDetails`.
+## Scenario 4: Removing Tables Used in Parameters
+
+- Description 
+  The user removes a table that is used in filters, sorting, or other parameters.
+
 - Program Logic:
-  - The program automatically determines the relationships through a chain of foreign keys:
-    - `Customers.CustomerID -> Orders.CustomerID`
-    - `Orders.OrderID -> OrderDetails.OrderID`
-  - If there are ambiguous foreign keys, the program asks the user to select the correct one.
-  - A query is generated:
-    ```sql
-    SELECT Customers.CustomerName, Orders.OrderID, OrderDetails.ProductID, OrderDetails.Quantity
-    FROM Customers
-    INNER JOIN Orders ON Customers.CustomerID = Orders.CustomerID
-    INNER JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID;
-    ```
+  - All parameters related to the removed table (filters, sorting, grouping) are automatically removed or reset.  
+  - The user is notified:  
+    *"Parameters related to the removed table have been cleared."*  
+  - If the table is used in relationships, those relationships are also removed, with a notification:  
+    *"Relationships with the removed table have been cleared."*  
+
 - Expected Result:
-  A table with combined data from all related tables is displayed correctly.
+  The program updates and removes all parameters and relationships related to the removed table.
 
 ---
 
-### Scenario 5: Unrelated Tables in the List
+## Scenario 5: Removing a Key Table in a Relationship Chain
+
 - Description:
-  The user selects several tables, some of which are related while others are not, such as `Customers`, `Orders`, and `Suppliers`.
+  The user removes a table that serves as a central node for multiple related tables (e.g., `A -> B -> C`, where `B` is removed).
+
 - Program Logic:
-  - The program generates an SQL query for the related tables (`Customers` and `Orders`) and provides options for the unrelated tables:
-    - Suggest adding a `CROSS JOIN`.
-    - Allow the user to manually specify a join condition.
-    - Exclude unrelated tables from the query and display a warning.
+  - The program checks if a direct relationship between the remaining tables can be established.  
+  - If no direct relationship is possible, all parameters and relationships involving the removed table are cleared.  
+  - The user is notified:  
+    *"Removing this table resulted in the removal of all dependent parameters and relationships."*  
+
 - Expected Result:
-  A table with data from the related tables is displayed, while the unrelated tables are either excluded or handled separately.
+  The program removes all parameters and relationships related to the removed table and informs the user about the changes.
 
 ---
 
-### Scenario 6: More Than Two Unrelated Tables
+## Scenario 6: Incorrect Table Removal
+
 - Description:
-  The user selects three or more tables that are not related, such as `Customers`, `Products`, and `Suppliers`.
+  The user attempts to remove a table without first removing the parameters that use it.
+
 - Program Logic:
-  - The program suggests either manually specifying join conditions or using multiple `CROSS JOIN` statements:
-    ```sql
-    SELECT Customers.CustomerName, Products.ProductName, Suppliers.SupplierName
-    FROM Customers
-    CROSS JOIN Products
-    CROSS JOIN Suppliers;
-    ```
+  - The program displays a warning before removal:  
+    *"Removing this table will result in the removal of all related parameters (sorting, filters, relationships). Are you sure you want to continue?"*  
+  - After confirmation, the parameters and relationships are removed.  
+
 - Expected Result:
-  A table with the Cartesian product of all rows from the selected tables is displayed.
+  The user is warned about the consequences of removing the table, and changes are applied only after confirmation.
 
 ---
 
-### Scenario 7: Tables Without Foreign Keys
+## Scenario 7: Working with Tables Without Foreign Keys
+
 - Description:
-  The tables are logically related, but the foreign key is not defined in the database.
+  Tables are logically related, but foreign keys are not defined in the database.
+
 - Program Logic:
-  - The program suggests the user manually specify the join condition (e.g., `Customers.CustomerID = Orders.CustomerID`).
-  - A query is generated:
+  - The program prompts the user to manually specify the relationship condition (e.g., `Customers.CustomerID = Orders.CustomerID`).  
+  - After specifying the condition, an SQL query is generated:  
     ```sql
     SELECT Customers.CustomerName, Orders.OrderID
     FROM Customers
     INNER JOIN Orders ON Customers.CustomerID = Orders.CustomerID;
-    ```
+    ```  
+
 - Expected Result:
-  A table is displayed based on the manually specified join condition.
+  The program correctly displays data based on the manually specified relationship condition.
 
 ---
 
-This document outlines the key scenarios and approaches for handling multiple tables in the SQL Query Builder. If necessary, it can be extended with additional details or examples.
+This document outlines the key scenarios for using SQL Query Builder and handling data in various situations. The document can be expanded with additional scenarios or details as necessary.
