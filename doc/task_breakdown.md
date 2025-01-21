@@ -1,99 +1,76 @@
-# SQL Query Builder: Task Breakdown
 
-This is a breakdown of tasks for building the **SQL Query Builder** application.
+# Task Breakdown for SQL Query Builder Development
 
----
+## 1. Main Development Stages
 
-## 1. Interface for Building SQL Queries
+### 1.1 Working with Tables
+- Tasks:
+  - Implement functionality to display a list of tables from the database.
+  - Add the ability to select multiple tables simultaneously.
+  - Configure the removal of tables from the current selection set.
+- Technical Details:
+  - Use an API to fetch the list of tables from the database.
+  - Ensure that removing a table correctly updates associated data (sorting, filters, relationships).
 
-Table Selection:
-- A dropdown list to display available tables from the database.
-- The ability to select multiple tables at once.
-- A "Add Table" button to add selected tables to the current query.
-- A "Clear Selection" button to reset selected tables.
+### 1.2 Configuring Table Relationships
+- Tasks:
+  - Implement automatic detection of relationships between tables (based on foreign keys).
+  - Add the ability to create, modify, and delete relationships manually.
+- Technical Details:
+  - Verify the correct removal of a relationship if one of the tables is deselected.
+  - Add error messages for incorrectly configured relationships.
 
-Column Selection:
-- Checkbox lists for selecting columns from the chosen tables.
-- Display a message "Please select tables first" if no tables are selected.
+### 1.3 Selecting Columns
+- Tasks:
+  - Display a list of available columns for the selected tables.
+  - Implement the ability to select columns to include in the SQL query.
+  - Ensure that removing a table also removes its columns from the query.
+- Technical Details:
+  - Update the interface in real-time when tables or columns are added/removed.
 
-Adding Filters (WHERE):
-- Fields to specify conditions:
-- A dropdown list for columns.
-- A dropdown list for operators (`=`, `>`, `<`).
-- A field to input a value.
-- An "Add Filter" button to add new conditions.
-- A "Clear Filters" button to remove all set conditions.
+### 1.4 Configuring Filters (WHERE)
+- Tasks:
+  - Add the ability to specify filtering conditions.
+  - Implement support for operators such as `=`, `>`, `<`, `LIKE`, etc.
+  - Ensure that filters are correctly removed when columns or tables are deleted.
+- Technical Details:
+  - Validate user-provided values.
+  - Display a list of active filters with options to edit or delete them.
 
-Sorting (ORDER BY):
-- A dropdown list for selecting a column to sort by.
-- The ability to specify the sorting order (ASC or DESC).
-- An "Add Sorting" button to add sorting parameters.
-- A "Clear Sorting" button to reset sorting parameters.
-
-Grouping (GROUP BY):
-- A dropdown list to select columns for grouping results.
-- Display a message "Please select columns for grouping."
-
-Having Clause:
-- Fields to specify conditions on grouped results.
-- A dropdown for columns and operators (`=`, `>`, `<`).
-- A text field to input values for conditions.
-
----
-
-## 2. Generating and Displaying SQL Queries
-
-Generation Logic:
-- Create a function for automatically constructing the SQL query:
-- Generate `SELECT` with selected columns.
-- Generate `FROM` with selected tables.
-- Generate `WHERE` with provided filters.
-- Generate `GROUP BY` and `HAVING` if specified.
-- Generate `ORDER BY` with specified sorting parameters.
-- Handle table joins (JOIN) based on foreign keys.
-
-Viewing the Query:
-- Display the generated SQL query in a text area for review.
-- Dynamically update the query text when parameters change. 
+### 1.5 Sorting and Grouping
+- Tasks:
+  - Configure column selection for sorting and specify the direction (ASC/DESC).
+  - Implement support for grouping (`GROUP BY`) and aggregate functions (SUM, AVG, COUNT, etc.).
+  - Ensure parameters are correctly updated when columns are removed.
+- Technical Details:
+  - Grouping should only be available for selected columns, while others must use aggregate functions.
 
 ---
 
-## 3. Executing the Query and Displaying Results
+## 2. SQL Query Generation
 
-"Execute Query" Button:
-- Implement a button to send the generated SQL query to the server.
+### 2.1 Query Generation Logic
+- Tasks:
+  - Automatically generate the SQL query when parameters are modified.
+  - Ensure the query is updated correctly when elements (tables, columns, filters, etc.) are added/removed.
+- Technical Details:
+  - Add error handling for invalid queries.
+  - Use parameterized queries to prevent SQL injection.
 
-Data Retrieval:
-- Write a method in the service to execute queries.
-- Return data from the database in JSON format.
-
-Displaying Results:
-- Display the query results in an HTML table using `<table>`, `<th>`, `<tr>`, `<td>` tags.
-- Add a "No data" message if the query result is empty.
-
-Summary for Data Structures:
-- Provide a summary view of the selected tables, columns, and conditions.
-- Display this summary dynamically based on the current query parameters.
+### 2.2 Executing Queries
+- Tasks:
+  - Implement the ability to send the generated query to the server for execution.
+  - Display query results in a tabular format.
+- Technical Details:
+  - Provide support for paginated result display. 
+  - Implement data export to CSV or Excel. 
 
 ---
 
-## 4. Working with Table Joins (JOIN)
+## 3. Error Handling and Exception Management
 
-Automatic Relationship Detection:
-- Use foreign keys to automatically create relationships between tables.
-- Implement a view for automatic relationships.
-
-Selecting Join Type:
-- Add the ability to select the join type (`INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN`).
-
-Handling Multiple Tables:
-- Allow users to select multiple tables and define relationships.
-- Display clear messages if tables are unrelated and require manual join conditions.
-
-Generating JOIN Queries:
-- Update the query generation logic to handle joins between tables.
-
- ---
-
-For client-side scenarios and use cases, refer to the "Handling Multiple Tables in SQL Query Builder" document.
-
+- Tasks:
+  - Implement error handling for query execution (e.g., syntax errors or unavailable tables).
+  - Display user-friendly error messages.
+- Technical Details:
+  - Log errors on the server for further analysis.
