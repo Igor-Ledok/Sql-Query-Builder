@@ -25,6 +25,6 @@
 
 ---
 
-## 4. Special Conditions
-
+## 4. Special Conditions 
+ 
 - For complex queries, the user can switch to manual SQL editing via a built-in text editor.

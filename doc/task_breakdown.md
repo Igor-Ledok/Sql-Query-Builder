@@ -61,9 +61,9 @@
 
 ---
 
-## 3. Logging and Error Handling
+## 3. Logging and Error Handling 
 
-- Tasks:
+- Tasks: 
   - Implement error handling for query execution (e.g., syntax errors or unavailable tables).
   - Display user-friendly error messages.
 - Technical Details:
