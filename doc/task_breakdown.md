@@ -1,70 +1,52 @@
-# Task Breakdown for SQL Query Builder Development
+# Task Breakdown for SQL Query Builder
 
-## 1. Core Modules of the Program
-
-### 1.1 Table Management Module
-- Tasks:
-  - Implement functionality to display a list of tables from the database.
-  - Add the ability to select multiple tables simultaneously.
-  - Configure the removal of tables from the current selection set.
-- Technical Details:
-  - Use an API to fetch the list of tables from the database.
-  - Ensure that removing a table correctly updates associated data (sorting, filters, relationships).
-
-### 1.2 Relationship Management Module
-- Tasks:
-  - Implement automatic detection of relationships between tables (based on foreign keys).
-  - Add the ability to create, modify, and delete relationships manually.
-- Technical Details:
-  - Verify the correct removal of a relationship if one of the tables is deselected.
-  - Add error messages for incorrectly configured relationships.
-
-### 1.3 Column Management Module
-- Tasks:
-  - Display a list of available columns for the selected tables.
-  - Implement the ability to select columns to include in the SQL query.
-  - Ensure that removing a table also removes its columns from the query.
-- Technical Details:
-  - Update the interface in real-time when tables or columns are added or removed.
-
-### 1.4 Data Filtering Module
-- Tasks:
-  - Add the ability to specify filtering conditions.
-  - Implement support for operators such as `=`, `>`, `<`, `LIKE`, etc.
-  - Ensure filters are correctly removed when columns or tables are deleted.
-- Technical Details:
-  - Validate user-provided values.
-  - Display a list of active filters with options to edit or delete them.
-
-### 1.5 Sorting and Grouping Module
-- Tasks:
-  - Configure column selection for sorting and specify the direction (ASC/DESC).
-  - Implement support for grouping (`GROUP BY`) and aggregate functions (SUM, AVG, COUNT, etc.).
-  - Ensure parameters are correctly updated when columns are removed.
-- Technical Details:
-  - Grouping should only be available for selected columns, while others must use aggregate functions.
+## 1. Tables
+- Provide users with the ability to select tables from the database.
+- Enable users to select multiple tables simultaneously.
+- Allow users to remove selected tables from the query.
+- Upon table removal, all related elements (sorting, filters, joins) must be removed.
 
 ---
 
-## 2. Generating and Executing SQL Queries
+## 2. Joins (JOIN)
+- Automatically detect joins between tables based on foreign keys.
+- Provide the ability to manually add, modify, and delete joins.
+- Allow users to select the type of join (`INNER JOIN`, `LEFT JOIN`, etc.).
+- Joins must be removed automatically if one of the tables is deleted.
 
-- Tasks:
-  - Automatically generate the SQL query when parameters are modified.
-  - Ensure the query is updated correctly when elements (tables, columns, filters, etc.) are added or removed.
-  - Implement the ability to send the generated query to the server for execution.
-  - Display the query results in a tabular format.
-- Technical Details:
-  - Add error handling for invalid queries.
-  - Use parameterized queries to prevent SQL injection.
-  - Provide support for paginated result display.
-  - Implement data export to CSV or Excel.
+--- 
+
+## 3. Columns
+- Display a list of available columns for the selected tables.
+- Enable users to select columns to include in the query.
+- Remove columns from the query when their associated table is deleted.
 
 ---
 
-## 3. Logging and Error Handling 
+## 4. Filters (WHERE)
+- Allow users to add data filtering conditions.
+- Support logical operators (`AND`, `OR`) and grouping conditions using parentheses.
+- Display a list of active filters with options for editing and deleting them.
+- Filters related to a deleted table or column must be automatically removed.
 
-- Tasks: 
-  - Implement error handling for query execution (e.g., syntax errors or unavailable tables).
-  - Display user-friendly error messages.
-- Technical Details:
-  - Log errors on the server for further analysis.
+---
+
+## 5. Sorting and Grouping
+- Enable column selection for sorting and specify the direction (ASC/DESC).
+- Support grouping (`GROUP BY`) with multiple columns and aggregate functions (SUM, AVG, COUNT).
+- Grouping is available only for selected columns, while others must use aggregate functions.
+- Remove related sorting and grouping parameters automatically when columns are deleted from the tables.
+
+---
+
+## 6. SQL Query Generation and Execution
+- Automatically update the SQL query based on changes to user-defined parameters.
+- Implement query execution and display results in a tabular format.
+- Allow users to execute the query and view the results in a table.
+
+---
+
+## 7. Error Handling
+- Implement error handling for SQL query execution (e.g., syntax errors or unavailable tables).
+- Display user-friendly error messages.
+- Notify users if the query cannot be executed due to configuration errors.
