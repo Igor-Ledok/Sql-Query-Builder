@@ -1,52 +1,54 @@
-# Task Breakdown for SQL Query Builder
+# SQL Query Builder Task Breakdown
 
-## 1. Tables
-- Provide users with the ability to select tables from the database.
-- Enable users to select multiple tables simultaneously.
-- Allow users to remove selected tables from the query.
-- Upon table removal, all related elements (sorting, filters, joins) must be removed.
+## 1. Table Management
+- Add a list of tables from the database.
+- Add functionality for users to select one or more tables for the query.
+- Add functionality for users to remove tables from the selection.
+- Implement removal of related joins, filters, sorting and grouping options.
+- Implement dynamic updating of the lists of available and columns.
+---
+
+## 2. Connection Management
+- Implement automatic detection of possible joins between tables based on foreign keys.
+- Add functionality for users to manually configure joins by specifying conditions and types (`INNER JOIN`, `LEFT JOIN`, etc.).
+- Add functionality for users to modify or delete existing joins.
+- Implement automatic removal of joins when a related table is removed.
 
 ---
 
-## 2. Joins (JOIN)
-- Automatically detect joins between tables based on foreign keys.
-- Provide the ability to manually add, modify, and delete joins.
-- Allow users to select the type of join (`INNER JOIN`, `LEFT JOIN`, etc.).
-- Joins must be removed automatically if one of the tables is deleted.
-
---- 
-
-## 3. Columns
-- Display a list of available columns for the selected tables.
-- Enable users to select columns to include in the query.
-- Remove columns from the query when their associated table is deleted.
+## 3. Column Management
+- Implement display of a list of available columns for each selected table.
+- Add functionality for users to select columns to include in the query.
+- Add functionality for users to remove columns from the query when the table associated with them is deleted.
+- Implement dynamic updating of the column list as tables are added or removed.
 
 ---
 
-## 4. Filters (WHERE)
-- Allow users to add data filtering conditions.
-- Support logical operators (`AND`, `OR`) and grouping conditions using parentheses.
-- Display a list of active filters with options for editing and deleting them.
-- Filters related to a deleted table or column must be automatically removed.
+## 4. Filter Management
+- Add functionality for users to add filters (`WHERE` conditions) by specifying columns, operators (`=`, `>`, `<`, etc.) and values.
+- Add functionality for users to use logical operators (`AND`, `OR`) and group conditions with parentheses.
+- Add functionality for users to edit or delete existing filters.
+- Implement automatic removal of filters associated with deleted tables or columns.
+- Implement validation of user input for compatibility with column data types.
 
 ---
 
 ## 5. Sorting and Grouping
-- Enable column selection for sorting and specify the direction (ASC/DESC).
-- Support grouping (`GROUP BY`) with multiple columns and aggregate functions (SUM, AVG, COUNT).
-- Grouping is available only for selected columns, while others must use aggregate functions.
-- Remove related sorting and grouping parameters automatically when columns are deleted from the tables.
+- Add functionality to select columns to sort by and specify direction (ASC/DESC).
+- Add functionality to customize grouping (`GROUP BY`) for selected columns.
+- Add functionality to apply aggregate functions (SUM, AVG, COUNT, etc.) to ungrouped columns.
+- Implement automatic removal of sorting and grouping parameters if the columns associated with them are removed.
 
 ---
 
-## 6. SQL Query Generation and Execution
-- Automatically update the SQL query based on changes to user-defined parameters.
-- Implement query execution and display results in a tabular format.
-- Allow users to execute the query and view the results in a table.
+## 6. Creating and executing SQL query
+- Implement automatic generation of SQL query based on user input.
+- Implement inclusion of selected tables, joins, columns, filters, sorting and grouping in the query.
+- Implement display of generated SQL queries in read-only format for user review.
 
 ---
 
-## 7. Error Handling
-- Implement error handling for SQL query execution (e.g., syntax errors or unavailable tables).
-- Display user-friendly error messages.
-- Notify users if the query cannot be executed due to configuration errors.
+## 7. Error handling
+- Implement validation of all user input to ensure the correctness of the query.
+- Implement display of errors for missing required elements such as tables or columns.
+- Implement error reporting for invalid or conflicting parameters in filters, joins or sorts.
