@@ -1,61 +1,86 @@
 # SQL Query Builder Task Breakdown
 
-## Task 1: Basic structure and first working query (2 days)
-- Implement a basic UI layout with components: Tables, Columns, Filters, Sorting, Joins
-- Implement functionality to display a list of available database tables
-- Implement selection of a single table for query execution
-- Implement execution of SELECT * FROM table for the selected table
-- Display the query result in a table format
-- Implement basic error handling for missing table selection
+## Task 1: UI and SQL query field (2 days)
+- Create a UI layout with sections for Tables, Joins, SQL query, Columns, Filters, Sorting, SQL query result
+- Display the SQL query generated from user selections
+- Allow users to manually input and modify the SQL query
 
 Expected result:
-- The user sees the UI, can select a table, and retrieve all its data using SELECT * FROM table
-- If no table is selected, an error message is shown
+- The UI contains sections for Tables, Joins, SQL query, Columns, Filters, Sorting, SQL query result
+- The user can manually enter an SQL query
+- The system executes the SQL query when triggered by the user
+- The system displays the query result in the SQL query result section
 
 ---
 
-## Task 2: Selecting columns (1 day)
-- Implement display of available columns for selected tables
-- Add functionality to select specific columns for query execution
-- Implement execution of queries with selected columns (SELECT column1, column2 FROM table)
-- Implement error handling for missing column selection
+## Task 2: Single table (1 day)
+- Display a list of tables
+- Allow selection of a single table
+- Add the selected table to the SQL query
 
 Expected result:
-- The user can select which columns to include in the query and retrieve data only for them
-- If no column is selected, an error message is shown
+- The system displays a list of available database tables
+- The user can select one table
+- The selected table is added to the SQL query
 
 ---
 
-## Task 3: Multiple tables and handling joins (1 day)
-- Add functionality to select multiple tables
-- Implement automatic detection of possible joins between selected tables
-- Implement execution of queries with multiple tables
-- Implement error handling for missing joins or incorrectly configured relationships
+## Task 3: Columns (1 day)
+- Display columns from selected tables
+- The user can select columns to execute the query
+- Update the SQL query with the selected columns
 
 Expected result:
-- The user can select multiple tables, the system automatically detects relationships, and the query includes the correct join conditions
-- If a join is missing or incorrectly configured, an error message is shown
+- The system displays available columns for selected tables
+- The user can select columns
+- The SQL query updates with the selected columns
 
 ---
 
-## Task 4: Filtering data (WHERE) (2 days)
-- Implement functionality to add filters (WHERE conditions) with columns, operators, and values
-- Implement execution of queries with filtering
-- Implement UI for adding, editing, and removing filters
-- Implement error handling for invalid or missing filters
+## Task 4: Multiple tables with joins (2 days)
+- Display joins of the selected tables
+- Allow selection of multiple tables
+- Ensure that only tables with relationships to the already selected ones can be added
+- Automatically add detected joins when multiple tables are selected
 
 Expected result:
-- The user can add filter conditions, and the query returns filtered data
-- If a filter is invalid or missing, an error message is shown
+- The user sees the joins of the selected tables.
+- The user can select multiple tables
+- Only tables with relationships to already selected tables can be added
+- The system automatically updates the SQL query with JOIN conditions when multiple tables are selected
 
 ---
 
-## Task 5: Sorting and grouping (1 day)
-- Add functionality to sort results (ORDER BY)
-- Add functionality to group data (GROUP BY)
-- Implement execution of queries with sorting and grouping
-- Implement error handling for invalid sorting or grouping configurations
+## Task 5: Filtering data (WHERE) (1 day)
+- Allow users to add, edit, and delete filters using columns, operators, and values
+- Update the SQL query with filters
 
 Expected result:
-- The user can apply sorting and grouping to the data
-- If sorting or grouping is invalid, an error message is shown
+- User can add, edit and delete filters using columns, operators and values
+- User is shown existing filters
+- System updates SQL query with `WHERE` conditions
+
+---
+
+## Task 6: Sorting (ORDER BY) (1 day)
+- Allow users to sort query results by selecting columns and sort direction (ASC/DESC)
+- Update the SQL query with sorting
+
+Expected result:
+- The user can add, edit and delete sorts using columns, operators and values
+- User is shown existing sorts
+- The system updates the SQL query with `ORDER BY`
+
+---
+
+## Task 7: Grouping (GROUP BY, HAVING) (1 day)
+- Allow users to group data using `GROUP BY`
+- Allow users to apply conditions on grouped data using `HAVING`
+- Update the SQL query with grouping
+
+Expected result:
+- The user is shown the existing groupings
+- The user can select columns for grouping
+- The user can apply conditions on grouped data using `HAVING`
+- The system updates the SQL query with `HAVING` conditions
+- The system updates the SQL query with `GROUP BY`
