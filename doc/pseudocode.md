@@ -1,100 +1,187 @@
-# Pseudocode and Implementation Plan for SQL Query Builder
+# SQL Query Builder Pseudocode 
 
-## Task 1: UI Structure and SQL Input Field
-pseudocode:
-public void InitializeUI()
+## Task 1: UI structure and SQL input field
+public class QueryBuilderUI
 {
-    // Create UI with required sections
-    List<string> uiSections = new List<string> { "Tables", "Joins", "SQL Query", "Columns", "Filters", "Sorting", "Query Result" };
-    SetupUI(uiSections);
-    // Add static SQL input field where users can manually enter queries
-    AddSQLInputField();
-}
-
-## Task 2: Selecting a Single Table
-Pseudocode:
-public void SelectTable()
-{
-    // Retrieve and display available tables
-    List<string> tables = GetAvailableTables();
-    DisplayTables(tables);
-    // Allow the user to select a table
-    string selectedTable = UserSelectTable(tables);
-    // Update SQL query with selected table
-    if (!string.IsNullOrEmpty(selectedTable))
-        UpdateSQLQuery($"FROM {selectedTable}");
-}
-
-## Task 3: Selecting Columns
-Pseudocode:
-public void SelectColumns()
-{
-    // Retrieve available columns for the selected table
-    List<string> columns = GetColumnsForTable(selectedTable);
-    DisplayColumns(columns);
-    // Allow user to select one or more columns
-    List<string> selectedColumns = UserSelectColumns(columns);
-    // Update SQL query
-    if (selectedColumns.Count > 0)
+    public void Initialize()
     {
-        string columnList = string.Join(", ", selectedColumns);
-        UpdateSQLQuery($"SELECT {columnList}");
+        SetupUILayout();
+        AddSQLInputField();
+    }
+    private void SetupUILayout()
+    {
+        // Create UI components: Tables, Joins, SQL Query, Columns, Filters, Sorting, Query Result
+    }
+    private void AddSQLInputField()
+    {
+        // Add a static SQL query input field where users can manually enter queries
     }
 }
 
-
-## Task 4: Selecting Multiple Tables and Handling Joins
-Pseudocode:
-public void SelectAdditionalTable()
+## Task 2: Selecting a single table
+public class TableSelection
 {
-    // Retrieve tables related to selected table
-    List<string> relatedTables = GetRelatedTables(selectedTable);
-    DisplayTables(relatedTables);
-    // Allow user to select another table
-    string newTable = UserSelectTable(relatedTables);
-    if (!string.IsNullOrEmpty(newTable))
+    private List<string> availableTables = new List<string>();
+    private string selectedTable;
+    public void DisplayTables()
     {
-        // Ensure only related tables can be added
-        string joinCondition = DetectJoinCondition(selectedTable, newTable);
-        if (!string.IsNullOrEmpty(joinCondition))
-            UpdateSQLQuery($"JOIN {newTable} ON {joinCondition}");
+        availableTables = GetAvailableTables();
+        RenderTables(availableTables);
+    }
+    public void SelectTable(string tableName)
+    {
+        if (availableTables.Contains(tableName))
+        {
+            selectedTable = tableName;
+            UpdateSQLQuery();
+        }
+    }
+    private List<string> GetAvailableTables()
+    {
+        // Fetch available tables from the database
+        return new List<string>();
+    }
+    private void RenderTables(List<string> tables)
+    {
+        // Display tables in UI
+    }
+    private void UpdateSQLQuery()
+    {
+        // Update the SQL query to reflect the selected table
     }
 }
 
-
-## Task 5: Filtering Data (WHERE)
-Pseudocode:
-public void AddFilter()
+## Task 3: Selecting columns
+public class ColumnSelection
 {
-    // Allow user to define a filter
-    (string column, string operation, string value) filter = UserDefineFilter();
-    // Validate and update SQL query
-    if (!string.IsNullOrEmpty(filter.column) && !string.IsNullOrEmpty(filter.operation) && !string.IsNullOrEmpty(filter.value))
-        UpdateSQLQuery($"WHERE {filter.column} {filter.operation} '{filter.value}'");
+    private List<string> availableColumns = new List<string>();
+    private List<string> selectedColumns = new List<string>();
+    public void DisplayColumns()
+    {
+        availableColumns = GetColumnsForTable();
+        RenderColumns(availableColumns);
+    }
+    public void SelectColumn(string columnName)
+    {
+        if (availableColumns.Contains(columnName))
+        {
+            selectedColumns.Add(columnName);
+            UpdateSQLQuery();
+        }
+    }
+    private List<string> GetColumnsForTable()
+    {
+        // Fetch columns for the selected table
+        return new List<string>();
+    }
+    private void RenderColumns(List<string> columns)
+    {
+        // Display columns in UI
+    }
+    private void UpdateSQLQuery()
+    {
+        // Update the SQL query to include selected columns
+    }
 }
 
+## Task 4: Selecting multiple tables and handling joins
+public class JoinHandler
+{
+    private Dictionary<string, List<string>> tableRelationships = new Dictionary<string, List<string>>();
+    private List<string> selectedTables = new List<string>();
+    public void SelectAdditionalTable(string tableName)
+    {
+        if (selectedTables.Count > 0 && tableRelationships.ContainsKey(tableName))
+        {
+            selectedTables.Add(tableName);
+            DetectAndApplyJoins();
+        }
+    }
+    private void DetectAndApplyJoins()
+    {
+        foreach (var table in selectedTables)
+        {
+            foreach (var relatedTable in tableRelationships[table])
+            {
+                if (selectedTables.Contains(relatedTable))
+                {
+                    ApplyJoin(table, relatedTable);
+                }
+            }
+        }
+    }
+    private void ApplyJoin(string table1, string table2)
+    {
+        // Update SQL query with JOIN condition between table1 and table2
+    }
+}
+
+## Task 5: Filtering data (WHERE)
+public class FilterHandler
+{
+    private List<string> filters = new List<string>();
+    public void AddFilter(string column, string operation, string value)
+    {
+        if (IsValidFilter(column, operation, value))
+        {
+            filters.Add($"{column} {operation} '{value}'");
+            UpdateSQLQuery();
+        }
+    }
+    private bool IsValidFilter(string column, string operation, string value)
+    {
+        // Validate filter input
+        return true;
+    }
+    private void UpdateSQLQuery()
+    {
+        // Update SQL query with WHERE conditions
+    }
+}
 
 ## Task 6: Sorting (ORDER BY)
-Pseudocode:
-public void AddSorting()
+public class SortingHandler
 {
-    // Allow user to define sorting
-    (string column, string direction) sorting = UserDefineSorting();
-    if (!string.IsNullOrEmpty(sorting.column))
-        UpdateSQLQuery($"ORDER BY {sorting.column} {sorting.direction}");
+    private List<string> sortingRules = new List<string>();
+    public void AddSorting(string column, string direction)
+    {
+        if (IsValidSorting(column, direction))
+        {
+            sortingRules.Add($"{column} {direction}");
+            UpdateSQLQuery();
+        }
+    }
+    private bool IsValidSorting(string column, string direction)
+    {
+        // Validate sorting input
+        return true;
+    }
+    private void UpdateSQLQuery()
+    {
+        // Update SQL query with ORDER BY clause
+    }
 }
 
-
 ## Task 7: Grouping (GROUP BY, HAVING)
-Pseudocode:
-public void AddGrouping()
+public class GroupingHandler
 {
-    // Allow users to group data
-    string groupColumn = UserDefineGrouping();
-    if (!string.IsNullOrEmpty(groupColumn))
-        UpdateSQLQuery($"GROUP BY {groupColumn}");
-    // Allow users to define HAVING conditions
-    string havingCondition = UserDefineHaving();
-    if (!string.IsNullOrEmpty(havingCondition))
-        UpdateSQLQuery($"HAVING {havingCondition}");
+    private List<string> groupings = new List<string>();
+    private List<string> havingConditions = new List<string>();
+    public void AddGrouping(string column)
+    {
+        groupings.Add(column);
+        UpdateSQLQuery();
+    }
+    public void AddHavingCondition(string condition)
+    {
+        if (groupings.Count > 0)
+        {
+            havingConditions.Add(condition);
+            UpdateSQLQuery();
+        }
+    }
+    private void UpdateSQLQuery()
+    {
+        // Update SQL query with GROUP BY and HAVING conditions
+    }
 }
